@@ -16,7 +16,7 @@
 
 typedef struct		s_hesh
 {
-	unsigned int	str[16];
+	char			str[64];
 	struct s_hesh	*next;
 }					t_hesh;
 
@@ -26,10 +26,10 @@ typedef struct		s_md5
 	int				q : 1;
 	int				r : 1;
 	int				s : 1;
-	unsigned int	A;
-	unsigned int	B;
-	unsigned int	C;
-	unsigned int	D;
+	uint32_t		A;
+	uint32_t		B;
+	uint32_t		C;
+	uint32_t		D;
 	char			*str;
 	t_hesh			*hesh;
 }					t_md5;
@@ -44,5 +44,6 @@ typedef struct		s_sha256
 
 void	ft_md5(int ac, char **av);
 void	ft_sha256(int ac, char **av);
+void    ft_get_hash_md5(t_md5 *md5, char *str);
 
 #endif
