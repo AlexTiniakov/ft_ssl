@@ -12,7 +12,7 @@
 
 #include <ft_ssl.h>
 
-int		main(int ac, char **av)
+int		ft_check(int ac, char **av)
 {
 	if (ac < 2 || !av)
 		return (ft_printf("usage: ft_ssl command [command opts] %s",
@@ -21,6 +21,16 @@ int		main(int ac, char **av)
 		return (ft_printf("ft_ssl: Error: '%s' is an invalid command.%s%s",
 		av[1], "\n\nStandard commands:\n\nMessage Digest commands:\nmd5\nsh",
 		"a256\n\nCipher commands:\n"));
-	!ft_strcmp("md5", av[1]) ? ft_md5() : ft_sha256();
+	return (0);
+}
+
+int		main(int ac, char **av)
+{
+	if (ft_check(ac, av))
+		return (1);
+	if (!ft_strcmp("md5", av[1]))
+		ft_md5(ac - 2, av);
+	else if (!ft_strcmp("sha256", av[1]))
+		ft_sha256(ac - 2, av);
 	return (0);
 }

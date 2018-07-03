@@ -12,7 +12,7 @@
 
 #include <ft_ssl.h>
 
-void	ft_sha256()
+void	ft_sha256(int ac, char **av)
 {
 	ft_printf("ft_sha256\n");
 }

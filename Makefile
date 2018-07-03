@@ -14,7 +14,7 @@ NAME = ft_ssl
 
 HEADER = ft_ssl.h
 
-FLAGS = -Wall -Wextra -Werror -I includes/
+FLAGS = -I includes/
 
 LIB = libft/libft.a
 
