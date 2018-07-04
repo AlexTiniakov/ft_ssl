@@ -21,6 +21,7 @@ LIB = libft/libft.a
 SRC = ft_ssl.c\
 		ft_md5.c\
 		ft_sha256.c\
+		ft_get_hash_md5.c\
 
 OBJ = $(SRC:.c=.o)
 
