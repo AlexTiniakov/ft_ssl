@@ -69,8 +69,8 @@ void    ft_get_hash_md5(t_md5 *md5)
     md5->len_buf = md5->len_msg + 1;
     while (md5->len_buf % 64 != 56)
         md5->len_buf++;
-    md5->buf = (char *)malloc(md5->len_buf + 9);
-    ft_bzero(md5->buf, md5->len_buf + 9);
+    md5->buf = (char *)malloc(md5->len_buf + 64);
+    ft_bzero(md5->buf, md5->len_buf + 64);
     md5->buf = ft_strcpy(md5->buf, md5->msg);
     *(uint32_t *)(md5->buf + md5->len_msg) = 0x80;
     *(uint64_t *)(md5->buf + md5->len_buf) = (uint64_t)(8 * md5->len_msg);
