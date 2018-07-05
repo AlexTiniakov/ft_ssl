@@ -19,8 +19,9 @@ void	ft_md5(int ac, char **av)
 	t_md5	*md5;
 
 	md5 = (t_md5 *)malloc(sizeof(t_md5));
-	md5->msg = ft_strcpy(ft_strnew(ft_strlen(av[2]) + 1), av[2]);
+	md5->msg = ft_strcpy(ft_strnew(ft_strlen(av[3]) + 1), av[3]);
 	md5->len_msg = ft_strlen(md5->msg);
+	//ft_printf("md5->msg %s\nmd5->len_msg %i\n", md5->msg, md5->len_msg);
 	ft_get_hash_md5(md5);
 /*	while (ac)
 	{
