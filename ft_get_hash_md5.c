@@ -26,37 +26,37 @@ const uint32_t t[] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 
 const uint32_t s[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17,
-	22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16,
-	23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15,
-	21, 6, 10, 15, 21, 6, 10, 15, 21};
+	22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23,
+    4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21,
+    6, 10, 15, 21, 6, 10, 15, 21};
 
-void    ft_md5_hashing(t_md5 *md5, int i, int j)
+void    ft_md5_hashing(t_h *md5, int i, int j)
 {
     if (i < 16)
-        md5->fghi = _F(md5->b, md5->c, md5->d);
+        md5->fghi = _F(md5->h1, md5->h2, md5->h3);
     else if (i < 32)
     {
-        md5->fghi = _G(md5->b, md5->c, md5->d);
+        md5->fghi = _G(md5->h1, md5->h2, md5->h3);
         j = (5 * i + 1) % 16;
     }
     else if (i < 48)
     {
-        md5->fghi = _H(md5->b, md5->c, md5->d);
+        md5->fghi = _H(md5->h1, md5->h2, md5->h3);
         j = (3 * i + 5) % 16;
     }
     else
     {
-        md5->fghi = _I(md5->b, md5->c, md5->d);
+        md5->fghi = _I(md5->h1, md5->h2, md5->h3);
         j = (7 * i) % 16;
     }
-    md5->tmp = md5->d;
-    md5->d = md5->c;
-    md5->c = md5->b;
-    md5->b = md5->b + _ROT((md5->a + md5->fghi + t[i] + md5->hash[j]), s[i]);
-    md5->a = md5->tmp;
+    md5->tmp = md5->h3;
+    md5->h3 = md5->h2;
+    md5->h2 = md5->h1;
+    md5->h1 = md5->h1 + _ROT_L((md5->h0 + md5->fghi + t[i] + md5->hash[j]), s[i]);
+    md5->h0 = md5->tmp;
 }
 
-void    ft_get_hash_md5(t_md5 *md5)
+void    ft_get_hash_md5(t_h *md5)
 {
     int i;
     int j;
@@ -73,25 +73,25 @@ void    ft_get_hash_md5(t_md5 *md5)
     ft_bzero(md5->buf, md5->len_buf + 64);
     md5->buf = (char *)ft_strcpy((char *)md5->buf, md5->msg);
     *(uint32_t *)(md5->buf + md5->len_msg) = 0x80;
-    *(uint32_t *)(md5->buf + md5->len_buf) = (uint32_t)(8 * md5->len_msg);
+    *(uint64_t *)(md5->buf + md5->len_buf) = (uint64_t)(8 * md5->len_msg);
     md5->count = 0;
     while (md5->count < md5->len_buf)
     {
         md5->hash = (uint32_t *)(md5->buf + md5->count);
-        md5->a = md5->aa.h;
-        md5->b = md5->bb.h;
-        md5->c = md5->cc.h;
-        md5->d = md5->dd.h;
+        md5->h0 = md5->aa.h;
+        md5->h1 = md5->bb.h;
+        md5->h2 = md5->cc.h;
+        md5->h3 = md5->dd.h;
         i = -1;
         while (++i < 64)
             ft_md5_hashing(md5, i, i);
-        md5->aa.h += md5->a;
-        md5->bb.h += md5->b;
-        md5->cc.h += md5->c;
-        md5->dd.h += md5->d;
+        md5->aa.h += md5->h0;
+        md5->bb.h += md5->h1;
+        md5->cc.h += md5->h2;
+        md5->dd.h += md5->h3;
         md5->count += 64;
     }
-    ft_printf("%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x\n",
+    ft_printf("%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x\n",
     (uint8_t)md5->aa.i[0],
     (uint8_t)md5->aa.i[1],
     (uint8_t)md5->aa.i[2],

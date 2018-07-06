@@ -14,5 +14,11 @@
 
 void	ft_sha256(int ac, char **av)
 {
-	ft_printf("ft_sha256\n");
+	t_h	sha;
+
+	sha.msg = ft_strcpy(ft_strnew(ft_strlen(av[3]) + 1), av[3]);
+	sha.len_msg = ft_strlen(sha.msg);
+	ft_get_hash_sha(&sha);
+	free(sha.msg);
+	free(sha.buf);
 }

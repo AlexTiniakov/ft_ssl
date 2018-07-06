@@ -14,9 +14,10 @@
 
 int		ft_check(int ac, char **av)
 {
-	if (ac < 2 || !av)
-		return (ft_printf("usage: ft_ssl command [command opts] %s",
-		"[command args]\n"));
+	if (ac < 2)
+		return (ft_printf("usage: ft_ssl command [-p] [-q] [-r] %s%s",
+		"[file_name]\n       ft_ssl command [-p] [-q] [-r] [-s] ",
+		 "[\"string\"]\n"));
 	if (ft_strcmp("md5", av[1]) && ft_strcmp("sha256", av[1]))
 		return (ft_printf("ft_ssl: Error: '%s' is an invalid command.%s%s",
 		av[1], "\n\nStandard commands:\n\nMessage Digest commands:\nmd5\nsh",
@@ -32,5 +33,6 @@ int		main(int ac, char **av)
 		ft_md5(ac - 2, av);
 	else if (!ft_strcmp("sha256", av[1]))
 		ft_sha256(ac - 2, av);
+//	system("leaks ft_ssl");
 	return (0);
 }

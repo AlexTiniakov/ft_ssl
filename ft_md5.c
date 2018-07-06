@@ -12,17 +12,16 @@
 
 #include <ft_ssl.h>
 
-
-
 void	ft_md5(int ac, char **av)
 {
-	t_md5	*md5;
+	t_h	md5;
 
-	md5 = (t_md5 *)malloc(sizeof(t_md5));
-	md5->msg = ft_strcpy(ft_strnew(ft_strlen(av[3]) + 1), av[3]);
-	md5->len_msg = ft_strlen(md5->msg);
+	md5.msg = ft_strcpy(ft_strnew(ft_strlen(av[3]) + 1), av[3]);
+	md5.len_msg = ft_strlen(md5.msg);
 	//ft_printf("md5->msg %s\nmd5->len_msg %i\n", md5->msg, md5->len_msg);
-	ft_get_hash_md5(md5);
+	ft_get_hash_md5(&md5);
+	free(md5.msg);
+	free(md5.buf);
 /*	while (ac)
 	{
 		md5 = ft_new_md5();
