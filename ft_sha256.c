@@ -12,13 +12,21 @@
 
 #include <ft_ssl.h>
 
-void	ft_sha256(int ac, char **av)
+void	ft_print_sha(t_h *sha)
 {
-	t_h	sha;
+	ft_printf("%.8x%.8x%.8x%.8x%.8x%.8x%.8x%.8x\n",
+    sha->h0,
+    sha->h1,
+    sha->h2,
+    sha->h3,
+    sha->h4,
+    sha->h5,
+    sha->h6,
+    sha->h7);
+}
 
-	sha.msg = ft_strcpy(ft_strnew(ft_strlen(av[3]) + 1), av[3]);
-	sha.len_msg = ft_strlen(sha.msg);
-	ft_get_hash_sha(&sha);
-	free(sha.msg);
-	free(sha.buf);
+void	ft_sha256(t_h *h)
+{
+	ft_get_hash_sha(h);
+	ft_print_sha(h);
 }

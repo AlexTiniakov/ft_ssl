@@ -59,7 +59,6 @@ void    ft_md5_hashing(t_h *md5, int i, int j)
 void    ft_get_hash_md5(t_h *md5)
 {
     int i;
-    int j;
 
     i = 0;
     md5->aa.h = 0x67452301;
@@ -91,21 +90,4 @@ void    ft_get_hash_md5(t_h *md5)
         md5->dd.h += md5->h3;
         md5->count += 64;
     }
-    ft_printf("%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x\n",
-    (uint8_t)md5->aa.i[0],
-    (uint8_t)md5->aa.i[1],
-    (uint8_t)md5->aa.i[2],
-    (uint8_t)md5->aa.i[3],
-    (uint8_t)md5->bb.i[0],
-    (uint8_t)md5->bb.i[1],
-    (uint8_t)md5->bb.i[2],
-    (uint8_t)md5->bb.i[3],
-    (uint8_t)md5->cc.i[0],
-    (uint8_t)md5->cc.i[1],
-    (uint8_t)md5->cc.i[2],
-    (uint8_t)md5->cc.i[3],
-    (uint8_t)md5->dd.i[0],
-    (uint8_t)md5->dd.i[1],
-    (uint8_t)md5->dd.i[2],
-    (uint8_t)md5->dd.i[3]);
 }
