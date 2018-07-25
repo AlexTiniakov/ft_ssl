@@ -128,6 +128,7 @@ int64_t				ft_atoi_base(char *str, char *base);
 void				ft_putnbr_u(uintmax_t nbr);
 int					ft_printf(const char *format, ...);
 intmax_t			ft_atoi_long(const char *str);
+char				*ft_str_toupper(char *str);
 
 char				*ft_check_flags(char **str, t_p *p);
 char				*ft_check_width(char **str, t_p *p, va_list *ap);

@@ -29,12 +29,10 @@ typedef union		u_md
 typedef struct		s_h
 {
 	int				std : 1;
-	int				o : 1;
 	int				p : 1;
 	int				q : 1;
 	int				r : 1;
 	int				s : 1;
-	int				md5 : 1;
 	int				i;
 	int				j;
 	t_md			aa;
@@ -53,13 +51,15 @@ typedef struct		s_h
 	uint32_t		h5;
 	uint32_t		h6;
 	uint32_t		h7;
-	uint32_t		len_msg;//
-	uint32_t		len_buf;//newlen
-	uint32_t		count;//ofset
-	int				set;//
-	char			*msg;
+	uint32_t		len_msg;
+	uint32_t		len_buf;
+	uint32_t		count;
+	int				set;
 	char			*buf;
-	uint32_t		*hash;//w
+	char			*file_name;
+	char			*msg;
+	char			*alg;
+	uint32_t		*hash;
 	uint32_t		*msg_uint;
 	uint32_t		fghi;
 	uint32_t		tmp;
@@ -79,10 +79,15 @@ typedef struct		s_h
 	uint32_t		h;
 }					t_h;
 
-void				ft_md5(t_h *h);
+typedef int			(*t_f)(t_h*);
+t_f					ft_get_f(char c);
+t_f					ft_get_p(char c);
+int					ft_check(int ac, char **av);
 void				ft_sha256(t_h *h);
-void				ft_get_hash_md5(t_h *md5);
-void				ft_get_hash_sha(t_h *sha);
+int					ft_get_hash_md5(t_h *md5);
+int					ft_get_hash_sha(t_h *sha);
 void				go_sha256(t_h *g);
+int					ft_print_md5(t_h *h);
+int					ft_print_sha(t_h *h);
 
 #endif

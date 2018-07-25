@@ -12,7 +12,7 @@
 
 #include <ft_ssl.h>
 
-const uint32_t t1[] = {0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+const uint32_t g_t1[] = {0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
 	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
 	0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 	0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa,
@@ -30,93 +30,96 @@ uint32_t	ft_rev_32(uint32_t x)
 		((x & 0xff00) << 8) | (x << 24));
 }
 
-void	ft_make_arr(t_h *sha)
+void		ft_make_arr(t_h *h)
 {
 	int j;
-	sha->hash = (uint32_t *)malloc(512);
-	ft_bzero(sha->hash, 512);
-	ft_memcpy(sha->hash, &sha->msg_uint[sha->i * 16], 512);
+
+	h->hash = (uint32_t *)malloc(512);
+	ft_bzero(h->hash, 512);
+	ft_memcpy(h->hash, &h->msg_uint[h->i * 16], 512);
 	j = 15;
 	while (++j < 64)
 	{
-		sha->tmp4 = _ROT_R(sha->hash[j - 15], 7) ^ _ROT_R(sha->hash[j - 15], 18)
-		^ (sha->hash[j - 15] >> 3);
-		sha->tmp = _ROT_R(sha->hash[j - 2], 17) ^
-		_ROT_R(sha->hash[j - 2], 19) ^ (sha->hash[j - 2] >> 10);
-		sha->hash[j] = sha->hash[j - 16] + sha->tmp4 + sha->hash[j - 7] + sha->tmp;
+		h->tmp4 = _ROT_R(h->hash[j - 15], 7) ^ _ROT_R(h->hash[j - 15], 18)
+		^ (h->hash[j - 15] >> 3);
+		h->tmp = _ROT_R(h->hash[j - 2], 17) ^
+		_ROT_R(h->hash[j - 2], 19) ^ (h->hash[j - 2] >> 10);
+		h->hash[j] = h->hash[j - 16] + h->tmp4 + h->hash[j - 7] + h->tmp;
 	}
-	sha->a = sha->h0;
-	sha->b = sha->h1;
-	sha->c = sha->h2;
-	sha->d = sha->h3;
-	sha->e = sha->h4;
-	sha->f = sha->h5;
-	sha->g = sha->h6;
-	sha->h = sha->h7;
+	h->a = h->h0;
+	h->b = h->h1;
+	h->c = h->h2;
+	h->d = h->h3;
+	h->e = h->h4;
+	h->f = h->h5;
+	h->g = h->h6;
+	h->h = h->h7;
 }
 
-void	ft_sha_alg(t_h *sha)
+void		ft_sha_alg(t_h *h)
 {
-	sha->tmp = _ROT_R(sha->e, 6) ^ _ROT_R(sha->e, 11) ^ _ROT_R(sha->e, 25);
-	sha->tmp2 = (sha->e & sha->f) ^ ((~sha->e) & sha->g);
-	sha->tmp3 = sha->h + sha->tmp + sha->tmp2 + t1[sha->j] + sha->hash[sha->j];
-	sha->tmp4 = _ROT_R(sha->a, 2) ^ _ROT_R(sha->a, 13) ^ _ROT_R(sha->a, 22);
-	sha->tmp5 = (sha->a & sha->b) ^ (sha->a & sha->c) ^ (sha->b & sha->c);
-	sha->tmp6 = sha->tmp4 + sha->tmp5;
-	sha->h = sha->g;
-	sha->g = sha->f;
-	sha->f = sha->e;
-	sha->e = sha->d + sha->tmp3;
-	sha->d = sha->c;
-	sha->c = sha->b;
-	sha->b = sha->a;
-	sha->a = sha->tmp3 + sha->tmp6;
+	h->tmp = _ROT_R(h->e, 6) ^ _ROT_R(h->e, 11) ^ _ROT_R(h->e, 25);
+	h->tmp2 = (h->e & h->f) ^ ((~h->e) & h->g);
+	h->tmp3 = h->h + h->tmp + h->tmp2 + g_t1[h->j] + h->hash[h->j];
+	h->tmp4 = _ROT_R(h->a, 2) ^ _ROT_R(h->a, 13) ^ _ROT_R(h->a, 22);
+	h->tmp5 = (h->a & h->b) ^ (h->a & h->c) ^ (h->b & h->c);
+	h->tmp6 = h->tmp4 + h->tmp5;
+	h->h = h->g;
+	h->g = h->f;
+	h->f = h->e;
+	h->e = h->d + h->tmp3;
+	h->d = h->c;
+	h->c = h->b;
+	h->b = h->a;
+	h->a = h->tmp3 + h->tmp6;
 }
 
-void	ft_get_sha(t_h *sha)
+void		ft_get_sha(t_h *h)
 {
-	sha->i = -1;
-	while ((uint32_t)++sha->i < sha->count)
+	h->i = -1;
+	while ((uint32_t)++h->i < h->count)
 	{
-		ft_make_arr(sha);
-		sha->j = -1;
-		while (++sha->j < 64)
-			ft_sha_alg(sha);
-		sha->h0 += sha->a;
-		sha->h1 += sha->b;
-		sha->h2 += sha->c;
-		sha->h3 += sha->d;
-		sha->h4 += sha->e;
-		sha->h5 += sha->f;
-		sha->h6 += sha->g;
-		sha->h7 += sha->h;
-		free(sha->hash);
+		ft_make_arr(h);
+		h->j = -1;
+		while (++h->j < 64)
+			ft_sha_alg(h);
+		h->h0 += h->a;
+		h->h1 += h->b;
+		h->h2 += h->c;
+		h->h3 += h->d;
+		h->h4 += h->e;
+		h->h5 += h->f;
+		h->h6 += h->g;
+		h->h7 += h->h;
+		free(h->hash);
 	}
-	free(sha->msg_uint);
+	free(h->msg_uint);
 }
 
-void    ft_get_hash_sha(t_h *sha)
+int			ft_get_hash_sha(t_h *h)
 {
 	int i;
 
-    sha->h0 = 0x6a09e667;
-	sha->h1 = 0xbb67ae85;
-	sha->h2 = 0x3c6ef372;
-	sha->h3 = 0xa54ff53a;
-	sha->h4 = 0x510e527f;
-	sha->h5 = 0x9b05688c;
-	sha->h6 = 0x1f83d9ab;
-	sha->h7 = 0x5be0cd19;
-	sha->len_buf = sha->len_msg * 8;
-	sha->count = 1 + ((sha->len_buf + 80) / 512);
-	sha->msg_uint = (uint32_t *)malloc(sha->count * 64);//protect
-	ft_bzero(sha->msg_uint, sha->count * 64);
-	ft_strcpy((char *)sha->msg_uint, sha->msg);
-	((char *)sha->msg_uint)[ft_strlen(sha->msg)] = 0x80;
+	h->h0 = 0x6a09e667;
+	h->h1 = 0xbb67ae85;
+	h->h2 = 0x3c6ef372;
+	h->h3 = 0xa54ff53a;
+	h->h4 = 0x510e527f;
+	h->h5 = 0x9b05688c;
+	h->h6 = 0x1f83d9ab;
+	h->h7 = 0x5be0cd19;
+	h->len_buf = h->len_msg * 8;
+	h->count = 1 + ((h->len_buf + 80) / 512);
+	if (!(h->msg_uint = (uint32_t *)malloc(h->count * 64)))
+		return (write(1, "Error\n", 6));
+	ft_bzero(h->msg_uint, h->count * 64);
+	ft_strcpy((char *)h->msg_uint, h->msg);
+	((char *)h->msg_uint)[ft_strlen(h->msg)] = 0x80;
 	i = -1;
-	while (++i < ((int)sha->count * 16) - 1)
-		sha->msg_uint[i] = ft_rev_32(sha->msg_uint[i]);
-	i = ((sha->count * 512 - 64) / 32) + 1;
-	sha->msg_uint[i] = sha->len_buf;
-	ft_get_sha(sha);
+	while (++i < ((int)h->count * 16) - 1)
+		h->msg_uint[i] = ft_rev_32(h->msg_uint[i]);
+	i = ((h->count * 512 - 64) / 32) + 1;
+	h->msg_uint[i] = h->len_buf;
+	ft_get_sha(h);
+	return (0);
 }
