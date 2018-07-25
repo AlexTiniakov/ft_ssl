@@ -12,7 +12,14 @@
 
 #include <ft_ssl.h>
 
-t_f	ft_get_f(char c)
+void	ft_get(char *str, t_h *h)
+{
+	h->alg = str;
+	h->func = ft_get_f(str[0]);
+	h->print = ft_get_p(str[0]);
+}
+
+t_f		ft_get_f(char c)
 {
 	static t_f *fun = NULL;
 
@@ -25,7 +32,7 @@ t_f	ft_get_f(char c)
 	return (fun[(int)c]);
 }
 
-t_f	ft_get_p(char c)
+t_f		ft_get_p(char c)
 {
 	static t_f *fun = NULL;
 

@@ -63,29 +63,29 @@ void	ft_print_else(t_h *h)
 	ft_printf("%s (", str);
 	ft_memdel((void **)&str);
 	h->s ? ft_printf("\"%s\") = ", h->msg) : ft_printf("%s) = ", h->file_name);
-	ft_get_p(h->alg[0])(h);
+	h->print(h);
 	h->s = 0;
 }
 
 void	ft_sha256(t_h *h)
 {
-	if (ft_get_f(h->alg[0])(h))
+	if (h->func(h))
 		return ;
 	if (h->p)
 	{
 		h->p = 0;
 		ft_printf("%s", h->msg);
-		ft_get_p(h->alg[0])(h);
+		h->print(h);
 	}
 	else if (h->q || h->std)
 	{
 		h->s = h->std ? h->s : 0;
 		h->std = 0;
-		ft_get_p(h->alg[0])(h);
+		h->print(h);
 	}
 	else if (h->r)
 	{
-		ft_get_p(h->alg[0])(h);
+		h->print(h);
 		ft_printf(" %c%s%c", h->s ? '\"' : '\0', h->s ? h->msg :
 		h->file_name, h->s ? '\"' : '\0');
 		h->s = 0;

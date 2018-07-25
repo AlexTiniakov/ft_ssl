@@ -20,6 +20,8 @@
 # define _ROT_R(x, y) ((((unsigned int)(x) >> (y))) | ((x) << (32 - (y))))
 # include "libft.h"
 
+typedef int			(*t_f)();
+
 typedef union		u_md
 {
 	uint32_t		h;
@@ -77,17 +79,18 @@ typedef struct		s_h
 	uint32_t		f;
 	uint32_t		g;
 	uint32_t		h;
+	t_f				func;
+	t_f				print;
 }					t_h;
 
-typedef int			(*t_f)(t_h*);
 t_f					ft_get_f(char c);
 t_f					ft_get_p(char c);
 int					ft_check(int ac, char **av);
 void				ft_sha256(t_h *h);
 int					ft_get_hash_md5(t_h *md5);
 int					ft_get_hash_sha(t_h *sha);
-void				go_sha256(t_h *g);
 int					ft_print_md5(t_h *h);
 int					ft_print_sha(t_h *h);
+void				ft_get(char *str, t_h *h);
 
 #endif

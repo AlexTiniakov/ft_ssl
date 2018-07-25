@@ -82,7 +82,7 @@ int		main(int ac, char **av)
 
 	if (ft_check(ac, av))
 		return (1);
-	h.alg = av[1];
+	ft_get(av[1], &h);
 	c = ft_check_flags_ssl(ac - 2, av + 2, &h, 0);
 	ac -= (2 + c);
 	av += (2 + c);
