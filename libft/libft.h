@@ -163,5 +163,6 @@ intmax_t			ft_putnbr_front(uintmax_t j, char *base, t_p *p,\
 									char front);
 intmax_t			ft_putnbr_unsign(uintmax_t j, char *base, t_p *p,\
 										char *front);
+int					get_next_line(int const fd, char **line);
 
 #endif

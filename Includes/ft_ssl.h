@@ -20,7 +20,7 @@
 # define _ROT_R(x, y) ((((unsigned int)(x) >> (y))) | ((x) << (32 - (y))))
 # include "libft.h"
 
-typedef int			(*t_f)();
+typedef void		(*t_f)();
 
 typedef union		u_md
 {
@@ -28,13 +28,27 @@ typedef union		u_md
 	char			i[4];
 }					t_md;
 
-typedef struct		s_h
+typedef struct		s_l
+{
+	char			*key;
+	t_f				value;
+	struct s_l		*next;
+}					t_l;
+
+typedef struct		s_ssl
 {
 	int				std : 1;
 	int				p : 1;
 	int				q : 1;
 	int				r : 1;
 	int				s : 1;
+	int				ac;
+	char			**av;
+	t_f				func;
+}					t_ssl;
+
+typedef struct		s_h
+{
 	int				i;
 	int				j;
 	t_md			aa;
@@ -83,14 +97,17 @@ typedef struct		s_h
 	t_f				print;
 }					t_h;
 
-t_f					ft_get_f(char c);
-t_f					ft_get_p(char c);
-int					ft_check(int ac, char **av);
-void				ft_sha256(t_h *h);
-int					ft_get_hash_md5(t_h *md5);
-int					ft_get_hash_sha(t_h *sha);
-int					ft_print_md5(t_h *h);
-int					ft_print_sha(t_h *h);
-void				ft_get(char *str, t_h *h);
+char				*ft_read_from_stdin(char *str, char *buf, int ret);
+int					read_from_stdin(t_h *h, t_ssl *ssl);
+int					msg_file(t_h *h, char *name);
+int					msg_str(t_h *h, char *str);
+t_f					ft_get_command(char *str, t_l *list);
+t_l					*ft_init_list();
+t_l					*ft_init_node(char *key, t_f value, t_l *list);
+void				ft_md5(t_ssl *ssl);
+int					ft_get_hash_md5(t_h *h);
+void				ft_sha256(t_ssl *ssl);
+int					ft_get_hash_sha(t_h *h);
+void				ft_usage(t_ssl *ssl);
 
 #endif
