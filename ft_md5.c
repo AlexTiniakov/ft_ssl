@@ -12,52 +12,50 @@
 
 #include <ft_ssl.h>
 
-int		ft_print_md5(t_h *h)
+void	ft_paste_md5(char *str, int i, uint32_t nbr)
 {
-	ft_printf("%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x",
-	(uint8_t)h->aa.i[0], (uint8_t)h->aa.i[1], (uint8_t)h->aa.i[2],
-	(uint8_t)h->aa.i[3], (uint8_t)h->bb.i[0], (uint8_t)h->bb.i[1],
-	(uint8_t)h->bb.i[2], (uint8_t)h->bb.i[3], (uint8_t)h->cc.i[0],
-	(uint8_t)h->cc.i[1], (uint8_t)h->cc.i[2], (uint8_t)h->cc.i[3]);
-	ft_printf("%2.2x%2.2x%2.2x%2.2x", (uint8_t)h->dd.i[0],
-	(uint8_t)h->dd.i[1], (uint8_t)h->dd.i[2], (uint8_t)h->dd.i[3]);
-	return (0);
+	str[i + 0] = _HEXL[((nbr / 16) % 16)];
+	str[i + 1] = _HEXL[(nbr % 16)];
+	str[i + 2] = _HEXL[((nbr / 4096) % 16)];
+	str[i + 3] = _HEXL[((nbr / 256) % 16)];
+	str[i + 4] = _HEXL[((nbr / 1048576) % 16)];
+	str[i + 5] = _HEXL[((nbr / 65536) % 16)];
+	str[i + 6] = _HEXL[(nbr / 268435456)];
+	str[i + 7] = _HEXL[((nbr / 16777216) % 16)];
+	str[i + 8] = '\0';
 }
 
-void	ft_print_else_md5(t_h *h, t_ssl *ssl)
+int		ft_print_md5(t_h *h)
 {
-	ft_printf("MD5 (");
-	ssl->s ? ft_printf("\"%s\") = ", h->msg) :
-	ft_printf("%s) = ", h->file_name);
-	ft_print_md5(h);
-	ssl->s = 0;
+	ft_paste_md5((char *)h->rez, 0, h->aa.h);
+	ft_paste_md5((char *)h->rez, 8, h->bb.h);
+	ft_paste_md5((char *)h->rez, 16, h->cc.h);
+	ft_paste_md5((char *)h->rez, 24, h->dd.h);
+	return (0);
 }
 
 void	ft_ssl_md5(t_h *h, t_ssl *ssl)
 {
-	if (ft_get_hash_md5(h))
+	if (ft_get_hash_md5(h) || ft_print_md5(h))
 		return ;
-	if (ssl->p)
-	{
-		ssl->p = 0;
-		ft_printf("%s", h->msg);
-		ft_print_md5(h);
-	}
+	if (ssl->p && !(ssl->p = 0))
+		ft_printf("%s%s", h->msg, (char *)h->rez);
 	else if (ssl->q || ssl->std)
 	{
 		ssl->s = ssl->std ? ssl->s : 0;
 		ssl->std = 0;
-		ft_print_md5(h);
+		ft_printf("%s", (char *)h->rez);
 	}
 	else if (ssl->r)
 	{
-		ft_print_md5(h);
-		ft_printf(" %c%s%c", ssl->s ? '\"' : '\0', ssl->s ? h->msg :
-		h->file_name, ssl->s ? '\"' : '\0');
+		ft_printf("%s %s%s%s", (char *)h->rez, _PRINT);
 		ssl->s = 0;
 	}
 	else
-		ft_print_else_md5(h, ssl);
+	{
+		ft_printf("MD5 (%s%s%s) = %s", _PRINT, (char *)h->rez);
+		ssl->s = 0;
+	}
 	ft_printf("\n");
 }
 

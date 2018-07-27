@@ -12,47 +12,54 @@
 
 #include <ft_ssl.h>
 
-int		ft_print_sha256(t_h *h)
+void	ft_paste_sha256(char *str, int i, uint32_t nbr)
 {
-	ft_printf("%.8x%.8x%.8x%.8x%.8x%.8x%.8x%.8x", h->h0, h->h1, h->h2, h->h3,
-	h->h4, h->h5, h->h6, h->h7);
-	return (0);
+	str[i + 0] = _HEXL[(nbr / 268435456)];
+	str[i + 1] = _HEXL[((nbr / 16777216) % 16)];
+	str[i + 2] = _HEXL[((nbr / 1048576) % 16)];
+	str[i + 3] = _HEXL[((nbr / 65536) % 16)];
+	str[i + 4] = _HEXL[((nbr / 4096) % 16)];
+	str[i + 5] = _HEXL[((nbr / 256) % 16)];
+	str[i + 6] = _HEXL[((nbr / 16) % 16)];
+	str[i + 7] = _HEXL[(nbr % 16)];
+	str[i + 8] = '\0';
 }
 
-void	ft_print_else_sha256(t_h *h, t_ssl *ssl)
+int		ft_print_sha256(t_h *h)
 {
-	ft_printf("SHA256 (");
-	ssl->s ? ft_printf("\"%s\") = ", h->msg) :
-	ft_printf("%s) = ", h->file_name);
-	ft_print_sha256(h);
-	ssl->s = 0;
+	ft_paste_sha256((char *)h->rez, 0, h->h0);
+	ft_paste_sha256((char *)h->rez, 8 * 1, h->h1);
+	ft_paste_sha256((char *)h->rez, 8 * 2, h->h2);
+	ft_paste_sha256((char *)h->rez, 8 * 3, h->h3);
+	ft_paste_sha256((char *)h->rez, 8 * 4, h->h4);
+	ft_paste_sha256((char *)h->rez, 8 * 5, h->h5);
+	ft_paste_sha256((char *)h->rez, 8 * 6, h->h6);
+	ft_paste_sha256((char *)h->rez, 8 * 7, h->h7);
+	return (0);
 }
 
 void	ft_ssl_sha256(t_h *h, t_ssl *ssl)
 {
-	if (ft_get_hash_sha(h))
+	if (ft_get_hash_sha(h) || ft_print_sha256(h))
 		return ;
-	if (ssl->p)
-	{
-		ssl->p = 0;
-		ft_printf("%s", h->msg);
-		ft_print_sha256(h);
-	}
+	if (ssl->p && !(ssl->p = 0))
+		ft_printf("%s%s", h->msg, (char *)h->rez);
 	else if (ssl->q || ssl->std)
 	{
 		ssl->s = ssl->std ? ssl->s : 0;
 		ssl->std = 0;
-		ft_print_sha256(h);
+		ft_printf("%s", (char *)h->rez);
 	}
 	else if (ssl->r)
 	{
-		ft_print_sha256(h);
-		ft_printf(" %c%s%c", ssl->s ? '\"' : '\0', ssl->s ? h->msg :
-		h->file_name, ssl->s ? '\"' : '\0');
+		ft_printf("%s %s%s%s", (char *)h->rez, _PRINT);
 		ssl->s = 0;
 	}
 	else
-		ft_print_else_sha256(h, ssl);
+	{
+		ft_printf("SHA256 (%s%s%s) = %s", _PRINT, (char *)h->rez);
+		ssl->s = 0;
+	}
 	ft_printf("\n");
 }
 

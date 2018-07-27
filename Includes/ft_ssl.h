@@ -12,6 +12,8 @@
 
 #ifndef FT_SSL_H
 # define FT_SSL_H
+# define _PS ssl->s ? "\"" : ""
+# define _PRINT _PS, ssl->s ? h->msg : h->file_name, _PS
 # define _F(x, y, z) ((x & y) | ((~x) & z))
 # define _G(x, y, z) ((x & z) | (y & (~z)))
 # define _H(x, y, z) (x ^ y ^ z)
@@ -75,6 +77,7 @@ typedef struct		s_h
 	char			*file_name;
 	char			*msg;
 	char			*alg;
+	char			rez[100];
 	uint32_t		*hash;
 	uint32_t		*msg_uint;
 	uint32_t		fghi;
