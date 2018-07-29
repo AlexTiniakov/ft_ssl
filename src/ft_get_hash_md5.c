@@ -33,36 +33,36 @@ const uint32_t g_s[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17,
 void		ft_md5_hashing(t_h *md5, int i, int j)
 {
 	if (i < 16)
-		md5->fghi = _F(md5->h1, md5->h2, md5->h3);
+		md5->fghi = _F(md5->b, md5->c, md5->d);
 	else if (i < 32)
 	{
-		md5->fghi = _G(md5->h1, md5->h2, md5->h3);
+		md5->fghi = _G(md5->b, md5->c, md5->d);
 		j = (5 * i + 1) % 16;
 	}
 	else if (i < 48)
 	{
-		md5->fghi = _H(md5->h1, md5->h2, md5->h3);
+		md5->fghi = _H(md5->b, md5->c, md5->d);
 		j = (3 * i + 5) % 16;
 	}
 	else
 	{
-		md5->fghi = _I(md5->h1, md5->h2, md5->h3);
+		md5->fghi = _I(md5->b, md5->c, md5->d);
 		j = (7 * i) % 16;
 	}
-	md5->tmp = md5->h3;
-	md5->h3 = md5->h2;
-	md5->h2 = md5->h1;
-	md5->h1 = md5->h1 + _ROT_L((md5->h0 + md5->fghi + g_t[i] + md5->hash[j]),
+	md5->tmp = md5->d;
+	md5->d = md5->c;
+	md5->c = md5->b;
+	md5->b = md5->b + _ROT_L((md5->a + md5->fghi + g_t[i] + md5->hash[j]),
 	g_s[i]);
-	md5->h0 = md5->tmp;
+	md5->a = md5->tmp;
 }
 
 int			ft_h_first(t_h *h)
 {
-	h->aa.h = 0x67452301;
-	h->bb.h = 0xefcdab89;
-	h->cc.h = 0x98badcfe;
-	h->dd.h = 0x10325476;
+	h->h0 = 0x67452301;
+	h->h1 = 0xefcdab89;
+	h->h2 = 0x98badcfe;
+	h->h3 = 0x10325476;
 	h->len_buf = h->len_msg + 1;
 	while (h->len_buf % 64 != 56)
 		h->len_buf++;
@@ -85,17 +85,17 @@ int			ft_get_hash_md5(t_h *h)
 	while (h->count < h->len_buf)
 	{
 		h->hash = (uint32_t *)(h->buf + h->count);
-		h->h0 = h->aa.h;
-		h->h1 = h->bb.h;
-		h->h2 = h->cc.h;
-		h->h3 = h->dd.h;
+		h->a = h->h0;
+		h->b = h->h1;
+		h->c = h->h2;
+		h->d = h->h3;
 		i = -1;
 		while (++i < 64)
 			ft_md5_hashing(h, i, i);
-		h->aa.h += h->h0;
-		h->bb.h += h->h1;
-		h->cc.h += h->h2;
-		h->dd.h += h->h3;
+		h->h0 += h->a;
+		h->h1 += h->b;
+		h->h2 += h->c;
+		h->h3 += h->d;
 		h->count += 64;
 	}
 	ft_memdel((void **)&h->buf);

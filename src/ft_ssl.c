@@ -20,6 +20,12 @@ void			ft_usage(t_ssl *ssl)
 	"[\"string\"]\n");
 }
 
+int				ft_usage_i(void)
+{
+	ft_usage(NULL);
+	return (1);
+}
+
 int				ft_error(char *str)
 {
 	return (ft_printf("ft_ssl: Error: '%s' is an invalid command.%s%s",\
@@ -45,17 +51,14 @@ int				main(int ac, char **av)
 {
 	t_ssl	ssl;
 	int		c;
-	char	*str;
 
 	if (ac < 2)
-		get_next_line(1, &str);
-	else
-		str = ft_strcpy(ft_strnew(ft_strlen(av[1])), av[1]);
-	if (!(ssl.func = ft_get_command(str, ft_init_list())))
-		return (ft_error(str));
-	c = ft_check_flags_ssl(ac < 2 ? 0 : ac - 2, av + 2, &ssl, 0);
-	ssl.ac = ac < 2 ? 0 : ac - 2 - c;
-	ssl.av = ac < 2 ? NULL : av + 2 + c;
+		return (ft_usage_i());
+	if (!(ssl.func = ft_get_command(av[1], ft_init_list())))
+		return (ft_error(av[1]));
+	c = ft_check_flags_ssl(ac - 2, av + 2, &ssl, 0);
+	ssl.ac = ac - 2 - c;
+	ssl.av = av + 2 + c;
 	ssl.func(&ssl);
 	return (0);
 }

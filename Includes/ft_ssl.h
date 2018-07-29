@@ -24,12 +24,6 @@
 
 typedef void		(*t_f)();
 
-typedef union		u_md
-{
-	uint32_t		h;
-	char			i[4];
-}					t_md;
-
 typedef struct		s_l
 {
 	char			*key;
@@ -53,14 +47,6 @@ typedef struct		s_h
 {
 	int				i;
 	int				j;
-	t_md			aa;
-	t_md			bb;
-	t_md			cc;
-	t_md			dd;
-	t_md			ee;
-	t_md			ff;
-	t_md			gg;
-	t_md			hh;
 	uint32_t		h0;
 	uint32_t		h1;
 	uint32_t		h2;

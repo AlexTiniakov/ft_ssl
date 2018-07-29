@@ -18,13 +18,13 @@ FLAGS = -Wall -Wextra -Werror -I includes/
 
 LIB = libft/libft.a
 
-SRC = ft_ssl.c\
-		ft_sha256.c\
-		ft_md5.c\
-		ft_get_hash_md5.c\
-		ft_get_hash_sha.c\
-		ft_get_command.c\
-		ft_read.c\
+SRC = src/ft_ssl.c\
+		src/ft_sha256.c\
+		src/ft_md5.c\
+		src/ft_get_hash_md5.c\
+		src/ft_get_hash_sha.c\
+		src/ft_get_command.c\
+		src/ft_read.c\
 
 OBJ = $(SRC:.c=.o)
 

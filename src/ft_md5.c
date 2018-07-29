@@ -27,10 +27,10 @@ void	ft_paste_md5(char *str, int i, uint32_t nbr)
 
 int		ft_print_md5(t_h *h)
 {
-	ft_paste_md5((char *)h->rez, 0, h->aa.h);
-	ft_paste_md5((char *)h->rez, 8, h->bb.h);
-	ft_paste_md5((char *)h->rez, 16, h->cc.h);
-	ft_paste_md5((char *)h->rez, 24, h->dd.h);
+	ft_paste_md5((char *)h->rez, 0, h->h0);
+	ft_paste_md5((char *)h->rez, 8, h->h1);
+	ft_paste_md5((char *)h->rez, 16, h->h2);
+	ft_paste_md5((char *)h->rez, 24, h->h3);
 	return (0);
 }
 
